@@ -31,28 +31,23 @@ namespace QuanLiDiemSinhVien
         }
         private void OpenChildForm(Form childForm)
         {
-            // Nếu đang có form nào mở thì đóng nó lại trước
             if (currentChildForm != null)
             {
                 currentChildForm.Close();
             }
             currentChildForm = childForm;
-            panelTitleBar.Controls.Clear();
-            panelMenu.Controls.Clear();
+
+            // Chỉ clear panelDesktop, giữ menu và title bar
             panelDesktop.Controls.Clear();
-            // Setup form con
+
             childForm.TopLevel = false;
             childForm.FormBorderStyle = FormBorderStyle.None;
             childForm.Dock = DockStyle.Fill;
 
-            // Thêm vào Panel (Đảm bảo bạn có Panel tên là panelDesktop hoặc panelBody)
-            // Nếu Panel của bạn tên khác (ví dụ panel1), hãy sửa chữ panelDesktop bên dưới thành tên đó
             panelDesktop.Controls.Add(childForm);
-            panelDesktop.Tag = childForm;
             childForm.BringToFront();
             childForm.Show();
 
-            // Đổi tiêu đề (Nếu bạn có Label tiêu đề)
             lblTitle.Text = childForm.Text;
         }
         private void btnSinhVien_Click(object sender, EventArgs e)
@@ -93,6 +88,11 @@ namespace QuanLiDiemSinhVien
         }
 
         private void panelMenu_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panelDesktop_Paint(object sender, PaintEventArgs e)
         {
 
         }

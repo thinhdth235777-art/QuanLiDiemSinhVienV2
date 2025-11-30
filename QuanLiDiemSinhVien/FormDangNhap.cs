@@ -17,7 +17,6 @@ namespace QuanLiDiemSinhVien
         {
             InitializeComponent();
         }
-        string chuoiKetNoi = @"Data Source=MAY02\SQLEXPRESS;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True;TrustServerCertificate=True";
         private void btnDangNhap_Click(object sender, EventArgs e)
         {
             if (txtTaiKhoan.Text == "" || txtMatKhau.Text == "")
@@ -28,37 +27,28 @@ namespace QuanLiDiemSinhVien
 
             try
             {
-                
-                using (SqlConnection conn = new SqlConnection(chuoiKetNoi))
+                string sql = "SELECT * FROM DangNhap WHERE TaiKhoan = N'"
+                             + txtTaiKhoan.Text.Trim() + "' AND MatKhau = N'"
+                             + txtMatKhau.Text.Trim() + "'";
+
+                DataTable dt = CoSoDuLieu.LayDuLieu(sql);
+
+                if (dt.Rows.Count > 0)
                 {
-                    conn.Open();
-                    string sql = "SELECT * FROM DangNhap WHERE TaiKhoan = @acc AND MatKhau = @pass";
-                    SqlCommand cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@acc", txtTaiKhoan.Text.Trim());
-                    cmd.Parameters.AddWithValue("@pass", txtMatKhau.Text.Trim());
+                    MessageBox.Show("Đăng nhập thành công!");
 
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
+                    string quyen = dt.Rows[0]["Quyen"].ToString();
+                    string tk = dt.Rows[0]["TaiKhoan"].ToString();
+                    string ten = dt.Rows[0]["HoTen"].ToString();
 
-                    if (dt.Rows.Count > 0)
-                    {
-                        MessageBox.Show("Đăng nhập thành công!");
-
-                        
-                        string quyen = dt.Rows[0]["Quyen"].ToString();
-                        string tk = dt.Rows[0]["TaiKhoan"].ToString();
-                        string ten = dt.Rows[0]["HoTen"].ToString();
-
-                        frmMain f = new frmMain(quyen, tk, ten);
-                        this.Hide();
-                        f.ShowDialog();
-                        this.Show();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Sai tài khoản hoặc mật khẩu!");
-                    }
+                    frmMain f = new frmMain(quyen, tk, ten);
+                    this.Hide();
+                    f.ShowDialog();
+                    this.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Sai tài khoản hoặc mật khẩu!");
                 }
             }
             catch (Exception ex)

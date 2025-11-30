@@ -13,7 +13,6 @@ namespace QuanLiDiemSinhVien
 {
     public partial class frmSinhVien : Form
     {
-        string chuoiKetNoi = @"Data Source=MAY02\SQLEXPRESS;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True;TrustServerCertificate=True";
         public frmSinhVien()
         {
             InitializeComponent();
@@ -26,44 +25,47 @@ namespace QuanLiDiemSinhVien
             btnLuu.Enabled = false;
             btnHuy.Enabled = false;
         }
+
         void LoadData()
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(chuoiKetNoi))
-                {
-                    conn.Open();
+                string sql = @"SELECT sv.MaSV, sv.HoTen, sv.NgaySinh, sv.GioiTinh, 
+                                      l.TenLop, sv.SoDienThoai, sv.DiaChi 
+                               FROM SinhVien sv
+                               LEFT JOIN Lop l ON sv.MaLop = l.MaLop";
 
-                    string sql = @"SELECT sv.MaSV, sv.HoTen, sv.NgaySinh, sv.GioiTinh, l.TenLop, sv.SoDienThoai, sv.DiaChi 
-                                   FROM SinhVien sv 
-                                   LEFT JOIN Lop l ON sv.MaLop = l.MaLop";
-
-                    SqlDataAdapter da = new SqlDataAdapter(sql, conn);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dgvSinhVien.DataSource = dt;
-                }
+                DataTable dt = CoSoDuLieu.LayDuLieu(sql);
+                dgvSinhVien.DataSource = dt;
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi LoadData: " + ex.Message);
+            }
         }
+
         void LoadComboLop()
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(chuoiKetNoi))
-                {
-                    conn.Open();
-                    SqlDataAdapter da = new SqlDataAdapter("SELECT MaLop, TenLop FROM Lop", conn);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
+                string sql = "SELECT MaLop, TenLop FROM Lop";
+                DataTable dt = CoSoDuLieu.LayDuLieu(sql);
 
-                    cboLop.DataSource = dt;
-                    cboLop.DisplayMember = "TenLop"; 
-                    cboLop.ValueMember = "MaLop";    
-                    cboLop.SelectedIndex = -1;       
-                }
+                cboLop.DataSource = dt;
+                cboLop.DisplayMember = "TenLop";
+                cboLop.ValueMember = "MaLop";
+                cboLop.SelectedIndex = -1;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi LoadComboLop: " + ex.Message);
+            }
+        }
+
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }
