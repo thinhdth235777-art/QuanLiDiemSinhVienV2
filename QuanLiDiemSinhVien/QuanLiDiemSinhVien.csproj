@@ -59,6 +59,12 @@
     <Compile Include="FormĐăngKí.Designer.cs">
       <DependentUpon>FormĐăngKí.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmQuanLyDiem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmQuanLyDiem.Designer.cs">
+      <DependentUpon>frmQuanLyDiem.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSinhVien.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +90,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormĐăngKí.resx">
       <DependentUpon>FormĐăngKí.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmQuanLyDiem.resx">
+      <DependentUpon>frmQuanLyDiem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSinhVien.resx">
       <DependentUpon>frmSinhVien.cs</DependentUpon>

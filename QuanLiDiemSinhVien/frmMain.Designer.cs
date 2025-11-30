@@ -147,6 +147,7 @@
             this.btnDiem.Text = "Quản lý Điểm";
             this.btnDiem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDiem.UseVisualStyleBackColor = true;
+            this.btnDiem.Click += new System.EventHandler(this.btnDiem_Click);
             // 
             // btnMonHoc
             // 

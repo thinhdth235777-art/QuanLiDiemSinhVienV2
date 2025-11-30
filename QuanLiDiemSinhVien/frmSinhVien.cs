@@ -12,12 +12,12 @@ using System.Windows.Forms;
 namespace QuanLiDiemSinhVien
 {
     public partial class frmSinhVien : Form
+
     {
         public frmSinhVien()
         {
             InitializeComponent();
         }
-
         private void frmSinhVien_Load(object sender, EventArgs e)
         {
             LoadData();
@@ -66,6 +66,15 @@ namespace QuanLiDiemSinhVien
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnThem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnLuu_Click(object sender, EventArgs e)
+        {
         }
     }
 }
