@@ -74,6 +74,7 @@ BEGIN
 END;
 GO
 
+
 INSERT INTO Lop VALUES ('DH22TH1', N'Đại học Tin Học K22 - Lớp 1', N'Công nghệ thông tin');
 INSERT INTO Lop VALUES ('DH23AV', N'Đại học Ngôn Ngữ Anh K23', N'Ngoại Ngữ');
 INSERT INTO Lop VALUES ('DH21SP', N'Đại học Sư Phạm Toán K21', N'Sư Phạm');
@@ -95,3 +96,5 @@ VALUES ('DQU001', N'Lê Minh Trí', '2004-05-10', N'Nam', N'Long Xuyên, An Gian
 INSERT INTO SinhVien (MaSV, HoTen, NgaySinh, GioiTinh, DiaChi, MaLop) 
 VALUES ('DQU002', N'Nguyễn Ngọc Hân', '2005-08-20', N'Nữ', N'Châu Đốc, An Giang', 'DH23AV');
 GO
+ALTER TABLE SinhVien
+ADD SoDienThoai VARCHAR(15);
