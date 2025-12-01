@@ -41,11 +41,12 @@ namespace QuanLiDiemSinhVien
                 btnXoa.Visible = false;
                 btnLuu.Visible = false;
                 btnLamMoi.Visible = false;
+                btnHuy.Visible = false;
                 cbMaSV.Text = hienThiChoTaiKhoan;
                 cbMaSV.Enabled = false;
             }
         }
-        void LoadData()
+        private void LoadData()
         {
             try
             {
@@ -87,7 +88,7 @@ namespace QuanLiDiemSinhVien
                 MessageBox.Show("Lỗi LoadData: " + ex.Message);
             }
         }
-        void LoadComboMonHoc()
+        private void LoadComboMonHoc()
         {
             try
             {
@@ -127,7 +128,7 @@ namespace QuanLiDiemSinhVien
         {
             var sql = "SELECT MaSV, HoTen FROM SinhVien";
             cbMaSV.DataSource = CoSoDuLieu.LayDuLieu(sql);
-            cbMaSV.DisplayMember = "HoTen";
+            cbMaSV.DisplayMember = "MaSV";
             cbMaSV.ValueMember = "MaSV";
             cbMaSV.SelectedIndex = -1;
         }
@@ -147,7 +148,7 @@ namespace QuanLiDiemSinhVien
         private void dgvDiem_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvDiem.CurrentRow == null) return;
-            cbMaSV.Text = dgvDiem.CurrentRow.Cells["MaSV"].Value?.ToString();
+            cbMaSV.SelectedValue = dgvDiem.CurrentRow.Cells["MaSV"].Value?.ToString();
             cboMonHoc.SelectedValue = dgvDiem.CurrentRow.Cells["MaMH"].Value?.ToString();
             txtDiemQuaTrinh.Text = dgvDiem.CurrentRow.Cells["DiemQuaTrinh"].Value?.ToString();
             txtDiemThi.Text = dgvDiem.CurrentRow.Cells["DiemThi"].Value?.ToString();
@@ -194,7 +195,12 @@ namespace QuanLiDiemSinhVien
         {
             try
             {
-                string maSV = cbMaSV.Text.Trim();
+                string maSV = cbMaSV.SelectedValue?.ToString();
+                if (cbMaSV.SelectedValue == null)
+                {
+                    MessageBox.Show("Vui lòng chọn sinh viên.");
+                    return;
+                }
                 string maMH = cboMonHoc.SelectedValue?.ToString();
                 if (string.IsNullOrEmpty(maSV) || string.IsNullOrEmpty(maMH))
                 {
@@ -254,6 +260,7 @@ namespace QuanLiDiemSinhVien
         private void btnLamMoi_Click(object sender, EventArgs e)
         {
             LoadComboMaSV();
+            LoadComboMonHoc();
             LoadData();
             ChinhSua(false);
         }
@@ -316,12 +323,14 @@ namespace QuanLiDiemSinhVien
                 }
 
                 string cot = map[timTheo];
-                string sqlBase = @"SELECT d.MaSV, sv.HoTen, d.MaMH, mh.TenMH,
-                                 d.DiemQuaTrinh, d.DiemThi, d.DiemTongKet, d.HocKy, d.NamHoc
-                                 FROM Diem d
-                                 LEFT JOIN SinhVien sv ON d.MaSV = sv.MaSV
-                                 LEFT JOIN MonHoc mh ON d.MaMH = mh.MaMH
-                                 WHERE ";
+                string sqlBase = @"SELECT d. MaSV, sv.HoTen, d.MaMH, mh.TenMH,
+                 d.DiemQuaTrinh, d.DiemThi, 
+                 (ISNULL(d.DiemQuaTrinh,0) + ISNULL(d.DiemThi,0)) / 2.0 AS DiemTongKet,
+                 d.HocKy, d.NamHoc
+                 FROM Diem d
+                 LEFT JOIN SinhVien sv ON d.MaSV = sv.MaSV
+                 LEFT JOIN MonHoc mh ON d.MaMH = mh. MaMH
+                 WHERE ";
                 DataTable dt;
                 if (timTheo == "Học kỳ")
                 {
@@ -353,6 +362,57 @@ namespace QuanLiDiemSinhVien
         {
             txtTimKiem.Clear();
             LoadData();
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            if (dgvDiem.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn dòng cần xóa.");
+                return;
+            }
+
+            string maSV = dgvDiem.CurrentRow.Cells["MaSV"].Value.ToString();
+            string maMH = dgvDiem.CurrentRow.Cells["MaMH"].Value.ToString();
+
+            DialogResult d = MessageBox.Show(
+                $"Bạn có chắc muốn xóa điểm của SV {maSV} – Môn {maMH}?",
+                "Xác nhận",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (d == DialogResult.No) return;
+
+            string sql = "DELETE FROM Diem WHERE MaSV = @MaSV AND MaMH = @MaMH";
+            SqlParameter[] pars =
+            {
+        new SqlParameter("@MaSV", maSV),
+        new SqlParameter("@MaMH", maMH)
+    };
+
+            CoSoDuLieu.ThucThiLenh(sql, pars);
+            LoadData();
+            MessageBox.Show("Xóa thành công!");
+        }
+
+        private void cbMaSV_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbMaSV.SelectedIndex != -1)
+            {
+                // Lấy dòng dữ liệu được chọn
+                DataRowView drv = cbMaSV.SelectedItem as DataRowView;
+
+                if (drv != null)
+                {
+                    // Gán tên sinh viên vào txtHoTen
+                    txtHoTen.Text = drv["HoTen"].ToString();
+                }
+            }
+            else
+            {
+                txtHoTen.Text = "";
+            }
         }
     }
 }

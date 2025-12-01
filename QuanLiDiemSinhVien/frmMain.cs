@@ -294,5 +294,11 @@ namespace QuanLiDiemSinhVien
             // 3. Cập nhật lại số liệu mới nhất (Load lại dữ liệu cho nóng hổi)
             LoadDashboard();
         }
+
+        private void btnXetHocBong_Click(object sender, EventArgs e)
+        {
+            frmXetHocBong frm = new frmXetHocBong();
+            frm.ShowDialog();
+        }
     }
 }

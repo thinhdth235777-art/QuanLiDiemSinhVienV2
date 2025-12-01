@@ -13,7 +13,7 @@ namespace QuanLiDiemSinhVien
 {
     public partial class FormMonHoc : Form
     {
-        string chuoiKetNoi = @"Data Source=MAY-60;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True;TrustServerCertificate=True";
+        string chuoiKetNoi = @"Data Source=.;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True;TrustServerCertificate=True";
         bool dangThem = false;
         public FormMonHoc()
         {

@@ -13,7 +13,7 @@ namespace QuanLiDiemSinhVien
 {
     public partial class FormĐăngKí : Form
     {
-        string chuoiKetNoi = @"Data Source=MAY02\SQLEXPRESS;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True;TrustServerCertificate=True";
+        string chuoiKetNoi = @"Data Source=.;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True;TrustServerCertificate=True";
         public FormĐăngKí()
         {
             InitializeComponent();

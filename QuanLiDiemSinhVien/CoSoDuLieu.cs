@@ -11,7 +11,7 @@ namespace QuanLiDiemSinhVien
 {
     internal class CoSoDuLieu
     {
-        public static string chuoiKetNoi = @"Data Source=MAY-60;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True";
+        public static string chuoiKetNoi = @"Data Source=.;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True";
 
         public static DataTable LayDuLieu(string cauLenh)
         {
@@ -52,6 +52,16 @@ namespace QuanLiDiemSinhVien
                     lenh.ExecuteNonQuery();
                 }
             }
+        }
+        public static DataTable LayHocBong()
+        {
+            return LayDuLieu("SELECT * FROM HocBong ORDER BY DiemGPA DESC");
+        }
+
+        public static DataTable LayHocBongTheoLop(string maLop)
+        {
+            string sql = "SELECT * FROM HocBong WHERE MaLop = @MaLop ORDER BY DiemGPA DESC";
+            return LayDuLieu(sql, new SqlParameter[] { new SqlParameter("@MaLop", maLop) });
         }
     }
 }
