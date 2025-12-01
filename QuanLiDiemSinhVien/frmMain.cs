@@ -141,5 +141,15 @@ namespace QuanLiDiemSinhVien
                 MessageBox.Show("Lỗi phân quyền! Quyền hiện tại: " + this.quyenHan);
             }
         }
+
+        private void btnDangKy_Click(object sender, EventArgs e)
+        {
+            if (this.quyenHan == "GiaoVien")
+            {
+                MessageBox.Show("Chức năng này chỉ dành cho Sinh viên!");
+                return;
+            }
+            OpenChildForm(new frmDangKyMon(this.taiKhoan));
+        }
     }
 }

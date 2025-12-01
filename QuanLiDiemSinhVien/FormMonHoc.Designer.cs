@@ -82,20 +82,12 @@
             // 
             this.cboLocHocKy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboLocHocKy.FormattingEnabled = true;
-            this.cboLocHocKy.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8"});
             this.cboLocHocKy.Location = new System.Drawing.Point(152, 16);
             this.cboLocHocKy.Margin = new System.Windows.Forms.Padding(4);
             this.cboLocHocKy.Name = "cboLocHocKy";
             this.cboLocHocKy.Size = new System.Drawing.Size(257, 21);
             this.cboLocHocKy.TabIndex = 2;
+            this.cboLocHocKy.SelectedIndexChanged += new System.EventHandler(this.cboLocHocKy_SelectedIndexChanged);
             // 
             // groupBox2
             // 
@@ -246,6 +238,7 @@
             this.btnHuy.TabIndex = 0;
             this.btnHuy.Text = "Huỷ";
             this.btnHuy.UseVisualStyleBackColor = true;
+            this.btnHuy.Click += new System.EventHandler(this.btnHuy_Click);
             // 
             // btnLuu
             // 
@@ -257,6 +250,7 @@
             this.btnLuu.TabIndex = 0;
             this.btnLuu.Text = "Lưu";
             this.btnLuu.UseVisualStyleBackColor = true;
+            this.btnLuu.Click += new System.EventHandler(this.btnLuu_Click);
             // 
             // btnXoa
             // 
@@ -267,6 +261,7 @@
             this.btnXoa.TabIndex = 0;
             this.btnXoa.Text = "Xoá";
             this.btnXoa.UseVisualStyleBackColor = true;
+            this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
             // 
             // btnSua
             // 
@@ -277,6 +272,7 @@
             this.btnSua.TabIndex = 0;
             this.btnSua.Text = "Sửa";
             this.btnSua.UseVisualStyleBackColor = true;
+            this.btnSua.Click += new System.EventHandler(this.btnSua_Click);
             // 
             // btnThem
             // 
@@ -287,6 +283,7 @@
             this.btnThem.TabIndex = 0;
             this.btnThem.Text = "Thêm";
             this.btnThem.UseVisualStyleBackColor = true;
+            this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
             // 
             // dgvMonHoc
             // 
@@ -299,6 +296,7 @@
             this.dgvMonHoc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMonHoc.Size = new System.Drawing.Size(1342, 291);
             this.dgvMonHoc.TabIndex = 14;
+            this.dgvMonHoc.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMonHoc_CellClick);
             // 
             // FormMonHoc
             // 
@@ -311,6 +309,7 @@
             this.Controls.Add(this.panelLoc);
             this.Name = "FormMonHoc";
             this.Text = "Môn học";
+            this.Load += new System.EventHandler(this.FormMonHoc_Load);
             this.panelLoc.ResumeLayout(false);
             this.panelLoc.PerformLayout();
             this.groupBox2.ResumeLayout(false);

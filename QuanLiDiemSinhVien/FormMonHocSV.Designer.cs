@@ -75,20 +75,12 @@
             // 
             this.cboLocHocKy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboLocHocKy.FormattingEnabled = true;
-            this.cboLocHocKy.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8"});
             this.cboLocHocKy.Location = new System.Drawing.Point(152, 16);
             this.cboLocHocKy.Margin = new System.Windows.Forms.Padding(4);
             this.cboLocHocKy.Name = "cboLocHocKy";
             this.cboLocHocKy.Size = new System.Drawing.Size(257, 21);
             this.cboLocHocKy.TabIndex = 2;
+            this.cboLocHocKy.SelectedIndexChanged += new System.EventHandler(this.cboLocHocKy_SelectedIndexChanged);
             // 
             // groupBox2
             // 
@@ -237,6 +229,7 @@
             this.dgvMonHoc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMonHoc.Size = new System.Drawing.Size(1348, 272);
             this.dgvMonHoc.TabIndex = 15;
+            this.dgvMonHoc.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMonHoc_CellClick);
             // 
             // FormMonHocSV
             // 
@@ -248,6 +241,7 @@
             this.Controls.Add(this.panelLoc);
             this.Name = "FormMonHocSV";
             this.Text = "Môn học";
+            this.Load += new System.EventHandler(this.FormMonHocSV_Load);
             this.panelLoc.ResumeLayout(false);
             this.panelLoc.PerformLayout();
             this.groupBox2.ResumeLayout(false);

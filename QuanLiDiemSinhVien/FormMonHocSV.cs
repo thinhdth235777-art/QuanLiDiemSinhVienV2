@@ -13,7 +13,7 @@ namespace QuanLiDiemSinhVien
 {
     public partial class FormMonHocSV : Form
     {
-        string chuoiKetNoi = @"Data Source=MAY-59;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True;TrustServerCertificate=True";
+        string chuoiKetNoi = @"Data Source=MAY-60;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True;TrustServerCertificate=True";
         public FormMonHocSV(string maSV)
         {
             InitializeComponent();

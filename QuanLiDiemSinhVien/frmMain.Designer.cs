@@ -132,6 +132,7 @@
             this.btnDangKy.Text = "Đăng ký môn - Cho SV";
             this.btnDangKy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDangKy.UseVisualStyleBackColor = true;
+            this.btnDangKy.Click += new System.EventHandler(this.btnDangKy_Click);
             // 
             // btnDiem
             // 
