@@ -165,6 +165,7 @@
             this.btnMonHoc.Text = "Môn Học";
             this.btnMonHoc.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnMonHoc.UseVisualStyleBackColor = true;
+            this.btnMonHoc.Click += new System.EventHandler(this.btnMonHoc_Click);
             // 
             // btnSinhVien
             // 

@@ -1,8 +1,11 @@
-﻿CREATE DATABASE QuanLyDiemSinhVien;
+﻿USE master;
+ALTER DATABASE QuanLyDiemSinhVien SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+GO
+CREATE DATABASE QuanLyDiemSinhVien;
 GO
 USE QuanLyDiemSinhVien;
 GO
-
+DROP DATABASE QuanLyDiemSinhVien
 
 CREATE TABLE Lop (
     MaLop VARCHAR(20) PRIMARY KEY, 
@@ -58,20 +61,7 @@ CREATE TABLE DangNhap (
     Quyen VARCHAR(20) DEFAULT 'SinhVien' 
 );
 GO
-CREATE TRIGGER TG_TuDongTaoTaiKhoan
-ON SinhVien
-AFTER INSERT
-AS
-BEGIN
-    
-    INSERT INTO DangNhap (TaiKhoan, MatKhau, HoTen, Quyen)
-    SELECT 
-        i.MaSV,             
-        '123',              
-        i.HoTen,            
-        'SinhVien'          
-    FROM inserted i;
-END;
+
 GO
 
 

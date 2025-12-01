@@ -247,7 +247,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.panelLoc);
             this.Name = "FormMonHocSV";
-            this.Text = "FormMonHocSV";
+            this.Text = "Môn học";
             this.panelLoc.ResumeLayout(false);
             this.panelLoc.PerformLayout();
             this.groupBox2.ResumeLayout(false);

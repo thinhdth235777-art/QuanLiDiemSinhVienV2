@@ -143,63 +143,101 @@ namespace QuanLiDiemSinhVien // ⚠️ Kiểm tra tên Namespace cho khớp
         // --- NÚT LƯU QUAN TRỌNG ---
         private void btnLuu_Click(object sender, EventArgs e)
         {
-            if (txtMaSV.Text == "" || txtHoTen.Text == "")
+            if (txtMaSV.Text.Trim() == "" || txtHoTen.Text.Trim() == "")
             {
-                MessageBox.Show("Vui lòng nhập Mã và Tên sinh viên!"); return;
+                MessageBox.Show("Vui lòng nhập đầy đủ Mã và Tên sinh viên!", "Thông báo");
+                return;
             }
 
             try
             {
                 string gioitinh = rdoNam.Checked ? "Nam" : "Nữ";
 
-                // 1. Tạo bộ tham số (Để truyền vào Class CSDL của bạn)
-                SqlParameter[] p = new SqlParameter[]
-                {
-                    new SqlParameter("@ma", txtMaSV.Text),
-                    new SqlParameter("@ten", txtHoTen.Text),
-                    new SqlParameter("@ns", dtpNgaySinh.Value),
-                    new SqlParameter("@gt", gioitinh),
-                    new SqlParameter("@lop", cboLop.SelectedValue ?? DBNull.Value),
-                    new SqlParameter("@dc", txtDiaChi.Text),
-                    new SqlParameter("@sdt", txtSDT.Text)
-                };
-
                 if (dangThem)
                 {
-                    // --- THÊM MỚI ---
+                    // ================= TRƯỜNG HỢP THÊM MỚI =================
 
-                    // A. Kiểm tra trùng mã (Dùng LayDuLieu)
-                    string sqlCheck = "SELECT * FROM SinhVien WHERE MaSV = @ma";
-                    SqlParameter[] pCheck = { new SqlParameter("@ma", txtMaSV.Text) };
+                    // 1. Kiểm tra trùng Mã SV
+                    string sqlCheckSV = "SELECT COUNT(*) FROM SinhVien WHERE MaSV = @ma";
+                    // Tạo tham số riêng cho việc check
+                    SqlParameter[] pCheck = { new SqlParameter("@ma", txtMaSV.Text.Trim()) };
 
-                    if (CoSoDuLieu.LayDuLieu(sqlCheck, pCheck).Rows.Count > 0)
+                    DataTable dtCheck = CoSoDuLieu.LayDuLieu(sqlCheckSV, pCheck);
+                    if (dtCheck.Rows.Count > 0 && int.Parse(dtCheck.Rows[0][0].ToString()) > 0)
                     {
-                        MessageBox.Show("Mã sinh viên đã tồn tại!"); return;
+                        MessageBox.Show("Mã sinh viên này đã tồn tại!", "Cảnh báo");
+                        return;
                     }
 
-                    // B. Thêm vào bảng SinhVien (Dùng ThucThiLenh)
+                    // 2. Thêm vào bảng SINHVIEN
                     string sqlInsert = "INSERT INTO SinhVien (MaSV, HoTen, NgaySinh, GioiTinh, MaLop, DiaChi, SoDienThoai) VALUES (@ma, @ten, @ns, @gt, @lop, @dc, @sdt)";
-                    CoSoDuLieu.ThucThiLenh(sqlInsert, p);
 
-                    // C. Tự động thêm Tài khoản (Dùng lại tham số @ma và @ten)
-                    string sqlTK = "INSERT INTO DangNhap (TaiKhoan, MatKhau, HoTen, Quyen) VALUES (@ma, '123', @ten, 'SinhVien')";
-                    SqlParameter[] pTK = { new SqlParameter("@ma", txtMaSV.Text), new SqlParameter("@ten", txtHoTen.Text) };
-                    CoSoDuLieu.ThucThiLenh(sqlTK, pTK);
+                    // Tạo bộ tham số MỚI TINH cho lệnh Insert này
+                    SqlParameter[] pInsert = new SqlParameter[]
+                    {
+                new SqlParameter("@ma", txtMaSV.Text.Trim()),
+                new SqlParameter("@ten", txtHoTen.Text.Trim()),
+                new SqlParameter("@ns", dtpNgaySinh.Value),
+                new SqlParameter("@gt", gioitinh),
+                new SqlParameter("@lop", cboLop.SelectedValue ?? DBNull.Value),
+                new SqlParameter("@dc", txtDiaChi.Text.Trim()),
+                new SqlParameter("@sdt", txtSDT.Text.Trim())
+                    };
+                    CoSoDuLieu.ThucThiLenh(sqlInsert, pInsert);
+
+                    // 3. Xử lý Tài khoản (Kiểm tra và Thêm)
+                    string sqlCheckTK = "SELECT COUNT(*) FROM DangNhap WHERE TaiKhoan = @ma";
+                    // Lại tạo tham số mới cho lệnh check TK
+                    SqlParameter[] pCheckTK = { new SqlParameter("@ma", txtMaSV.Text.Trim()) };
+                    DataTable dtCheckTK = CoSoDuLieu.LayDuLieu(sqlCheckTK, pCheckTK);
+
+                    if (int.Parse(dtCheckTK.Rows[0][0].ToString()) == 0)
+                    {
+                        string sqlTK = "INSERT INTO DangNhap (TaiKhoan, MatKhau, HoTen, Quyen) VALUES (@ma, '123', @ten, 'SinhVien')";
+
+                        // Tạo tham số mới cho lệnh thêm TK
+                        SqlParameter[] pTK = {
+                    new SqlParameter("@ma", txtMaSV.Text.Trim()),
+                    new SqlParameter("@ten", txtHoTen.Text.Trim())
+                };
+                        CoSoDuLieu.ThucThiLenh(sqlTK, pTK);
+                    }
                 }
                 else
                 {
-                    // --- CẬP NHẬT ---
+                    // ================= TRƯỜNG HỢP CẬP NHẬT (SỬA) =================
+
                     string sqlUpdate = "UPDATE SinhVien SET HoTen=@ten, NgaySinh=@ns, GioiTinh=@gt, MaLop=@lop, DiaChi=@dc, SoDienThoai=@sdt WHERE MaSV=@ma";
-                    CoSoDuLieu.ThucThiLenh(sqlUpdate, p);
+
+                    // Tạo bộ tham số MỚI cho lệnh Update
+                    SqlParameter[] pUpdate = new SqlParameter[]
+                    {
+                new SqlParameter("@ma", txtMaSV.Text.Trim()),
+                new SqlParameter("@ten", txtHoTen.Text.Trim()),
+                new SqlParameter("@ns", dtpNgaySinh.Value),
+                new SqlParameter("@gt", gioitinh),
+                new SqlParameter("@lop", cboLop.SelectedValue ?? DBNull.Value),
+                new SqlParameter("@dc", txtDiaChi.Text.Trim()),
+                new SqlParameter("@sdt", txtSDT.Text.Trim())
+                    };
+                    CoSoDuLieu.ThucThiLenh(sqlUpdate, pUpdate);
+
+                    // Cập nhật tên bên Tài khoản
+                    string sqlUpdateTK = "UPDATE DangNhap SET HoTen=@ten WHERE TaiKhoan=@ma";
+                    SqlParameter[] pUpdateTK = {
+                new SqlParameter("@ma", txtMaSV.Text.Trim()),
+                new SqlParameter("@ten", txtHoTen.Text.Trim())
+            };
+                    CoSoDuLieu.ThucThiLenh(sqlUpdateTK, pUpdateTK);
                 }
 
-                MessageBox.Show("Lưu thành công!");
+                MessageBox.Show("Lưu thành công!", "Thông báo");
                 LoadData();
                 ResetGiaoDien();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Có lỗi xảy ra: " + ex.Message);
+                MessageBox.Show("Lỗi: " + ex.Message);
             }
         }
 
@@ -246,6 +284,14 @@ namespace QuanLiDiemSinhVien // ⚠️ Kiểm tra tên Namespace cho khớp
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void txtSDT_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

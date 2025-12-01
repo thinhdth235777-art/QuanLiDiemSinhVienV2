@@ -124,5 +124,22 @@ namespace QuanLiDiemSinhVien
                 this.Close(); 
             }
         }
+
+        private void btnMonHoc_Click(object sender, EventArgs e)
+        {
+            if (this.quyenHan == "GiaoVien")
+            {
+                OpenChildForm(new FormMonHoc());
+            }
+            else if (this.quyenHan == "SinhVien")
+            {
+                // truyền tài khoản (MaSV) để chỉ hiển thị điểm của chính sinh viên đó
+                OpenChildForm(new FormMonHocSV(this.taiKhoan));
+            }
+            else
+            {
+                MessageBox.Show("Lỗi phân quyền! Quyền hiện tại: " + this.quyenHan);
+            }
+        }
     }
 }

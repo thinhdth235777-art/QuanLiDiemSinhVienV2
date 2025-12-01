@@ -127,9 +127,11 @@
             // txtSDT
             // 
             this.txtSDT.Location = new System.Drawing.Point(128, 240);
+            this.txtSDT.MaxLength = 10;
             this.txtSDT.Name = "txtSDT";
             this.txtSDT.Size = new System.Drawing.Size(121, 26);
             this.txtSDT.TabIndex = 1;
+            this.txtSDT.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSDT_KeyPress);
             // 
             // label7
             // 
@@ -329,7 +331,7 @@
             this.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmSinhVien";
-            this.Text = "Quản lý danh sách sinh viên";
+            this.Text = "Quản lí sinh viên";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmSinhVien_Load);
             this.groupBox1.ResumeLayout(false);
