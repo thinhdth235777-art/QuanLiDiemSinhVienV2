@@ -19,36 +19,51 @@ namespace QuanLiDiemSinhVien
         }
         private void btnDangNhap_Click(object sender, EventArgs e)
         {
+            // 1. Kiểm tra nhập liệu
             if (txtTaiKhoan.Text == "" || txtMatKhau.Text == "")
             {
-                MessageBox.Show("Nhập thiếu thông tin!");
+                MessageBox.Show("Vui lòng nhập tài khoản và mật khẩu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                string sql = "SELECT * FROM DangNhap WHERE TaiKhoan = N'"
-                             + txtTaiKhoan.Text.Trim() + "' AND MatKhau = N'"
-                             + txtMatKhau.Text.Trim() + "'";
+                // 2. Kiểm tra trong CSDL (Dùng tham số @ để an toàn)
+                string sql = "SELECT * FROM DangNhap WHERE TaiKhoan = @tk AND MatKhau = @mk";
 
-                DataTable dt = CoSoDuLieu.LayDuLieu(sql);
+                SqlParameter[] p = new SqlParameter[] {
+            new SqlParameter("@tk", txtTaiKhoan.Text.Trim()),
+            new SqlParameter("@mk", txtMatKhau.Text.Trim())
+        };
+
+                DataTable dt = CoSoDuLieu.LayDuLieu(sql, p);
 
                 if (dt.Rows.Count > 0)
                 {
-                    MessageBox.Show("Đăng nhập thành công!");
-
                     string quyen = dt.Rows[0]["Quyen"].ToString();
                     string tk = dt.Rows[0]["TaiKhoan"].ToString();
                     string ten = dt.Rows[0]["HoTen"].ToString();
 
+                    MessageBox.Show("Đăng nhập thành công! Xin chào " + ten, "Thông báo");
                     frmMain f = new frmMain(quyen, tk, ten);
-                    this.Hide();
-                    f.ShowDialog();
-                    this.Show();
+                    this.Hide(); 
+
+                    DialogResult result = f.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {    
+                        this.Show();          
+                        txtMatKhau.Text = ""; 
+                        txtTaiKhoan.Focus();  
+                    }
+                    else
+                    {
+                        Application.Exit();   
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Sai tài khoản hoặc mật khẩu!");
+                    MessageBox.Show("Sai tài khoản hoặc mật khẩu!", "Lỗi đăng nhập", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
@@ -80,6 +95,11 @@ namespace QuanLiDiemSinhVien
         private void btnThoat_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void FormDangNhap_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -98,6 +98,7 @@ VALUES ('DQU002', N'Nguyễn Ngọc Hân', '2005-08-20', N'Nữ', N'Châu Đốc
 GO
 ALTER TABLE SinhVien
 ADD SoDienThoai VARCHAR(15);
+ALTER TABLE SinhVien ADD AnhThe VARBINARY(MAX);
 INSERT INTO Diem (MaSV, MaMH, DiemQuaTrinh, DiemThi, HocKy, NamHoc)
 VALUES 
   (N'DQU001', N'CSDL', 8.5, 7.0, 1, N'2024-2025'),

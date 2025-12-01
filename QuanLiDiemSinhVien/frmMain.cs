@@ -18,7 +18,7 @@ namespace QuanLiDiemSinhVien
         private string hoTen;
         public frmMain(string quyen, string tk, string ten)
         {
-           
+
             InitializeComponent();
             this.quyenHan = quyen;
             this.taiKhoan = tk;
@@ -65,7 +65,7 @@ namespace QuanLiDiemSinhVien
                 // Trường hợp quyền bị sai hoặc rỗng
                 MessageBox.Show("Lỗi phân quyền! Quyền hiện tại: " + this.quyenHan);
             }
-            }
+        }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
@@ -80,7 +80,7 @@ namespace QuanLiDiemSinhVien
             // Nạp lại Dashboard (Bạn phải viết hàm tạo lại 4 ô màu, hoặc đơn giản là mở lại FormMain mới)
             // Cách đơn giản nhất cho người mới:
             // Ẩn form hiện tại đi và mở form mới
-            
+
             /*this.Hide();
             frmMain moi = new frmMain(this.quyenHan, this.taiKhoan, this.hoTen);
             moi.ShowDialog();
@@ -113,5 +113,16 @@ namespace QuanLiDiemSinhVien
                 MessageBox.Show("Lỗi phân quyền! Quyền hiện tại: " + this.quyenHan);
             }
         }
+
+        private void btnThoat_Click(object sender, EventArgs e)
+        {
+            DialogResult traloi = MessageBox.Show("Bạn có chắc chắn muốn đăng xuất không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (traloi == DialogResult.Yes)
+            {
+                this.DialogResult = DialogResult.OK;
+                this.Close(); 
+            }
+        }
     }
-    }
+}

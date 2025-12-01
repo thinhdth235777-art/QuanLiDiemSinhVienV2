@@ -15,7 +15,7 @@ namespace QuanLiDiemSinhVien
     public partial class frmThongTinCaNhan : Form
     {
         string maSVHienTai = "";
-        string chuoiKetNoi = @"Data Source=MAY02\SQLEXPRESS;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True;TrustServerCertificate=True";
+        string chuoiKetNoi = CoSoDuLieu.chuoiKetNoi;
         public frmThongTinCaNhan(string maSV)
         {
             InitializeComponent();
@@ -34,9 +34,9 @@ namespace QuanLiDiemSinhVien
                 {
                     conn.Open();
                     string sql = @"SELECT sv.*, l.TenLop 
-                                   FROM SinhVien sv 
-                                   LEFT JOIN Lop l ON sv.MaLop = l.MaLop
-                                   WHERE sv.MaSV = @ma";
+                                    FROM SinhVien sv 
+                                    LEFT JOIN Lop l ON sv.MaLop = l.MaLop
+                                    WHERE LTRIM(RTRIM(sv.MaSV)) = @ma";
 
                     SqlCommand cmd = new SqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@ma", maSVHienTai);
@@ -147,6 +147,17 @@ namespace QuanLiDiemSinhVien
                 img.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                 return ms.ToArray();
             }
+        }
+
+        private void btnDoiMatKhau_Click(object sender, EventArgs e)
+        {
+            frmDoiMatKhau f = new frmDoiMatKhau(this.maSVHienTai);
+            f.ShowDialog();
+        }
+
+        private void btnThoat_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

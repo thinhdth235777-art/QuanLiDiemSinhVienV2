@@ -11,7 +11,7 @@ namespace QuanLiDiemSinhVien
 {
     internal class CoSoDuLieu
     {
-        public static string chuoiKetNoi = @"Data Source=.;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True";
+        public static string chuoiKetNoi = @"Data Source=MAY-60;Initial Catalog=QuanLyDiemSinhVien;Integrated Security=True";
 
         public static DataTable LayDuLieu(string cauLenh)
         {
